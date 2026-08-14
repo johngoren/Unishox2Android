@@ -12,4 +12,8 @@ add_library(unishox2_jni SHARED ${UNISHOX2_SOURCES})
 
 # Find and link log library (Android logging)
 find_library(log-lib log)
-target_link_libraries(unishox2_jni ${log-lib})
+target_link_libraries(unishox2_jni
+        PRIVATE
+        ${log-lib}
+        "-Wl,-z,max-page-size=16384"
+)
