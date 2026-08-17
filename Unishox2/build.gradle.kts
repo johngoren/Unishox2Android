@@ -1,6 +1,10 @@
+import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.api.publish.PublishingExtension
+
 plugins {
     id("com.android.library")
     kotlin("android")
+    id("maven-publish")
 }
 
 android {
@@ -45,6 +49,51 @@ android {
 
     kotlinOptions {
         jvmTarget = "17"
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+}
+
+configure<PublishingExtension> {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = "org.operatorfoundation"
+            artifactId = "unishox2"
+            version = "1.0.0"
+
+            afterEvaluate {
+                from(components["release"])
+            }
+
+            pom {
+                name.set("Unishox2 Android")
+                description.set("Android library implementation of Unishox2 compression")
+                url.set("https://github.com/OperatorFoundation/Unishox2Android")
+                licenses {
+                    license {
+                        name.set("MIT License")
+                        url.set("https://opensource.org/licenses/MIT")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("operatorfoundation")
+                        name.set("Operator Foundation")
+                        email.set("info@operatorfoundation.org")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git://github.com/OperatorFoundation/Unishox2Android.git")
+                    developerConnection.set("scm:git:ssh://github.com/OperatorFoundation/Unishox2Android.git")
+                    url.set("https://github.com/OperatorFoundation/Unishox2Android")
+                }
+            }
+        }
     }
 }
 
