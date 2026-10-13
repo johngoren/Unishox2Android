@@ -12,7 +12,12 @@ add_library(unishox2_jni SHARED ${UNISHOX2_SOURCES})
 
 # Find and link log library (Android logging)
 find_library(log-lib log)
-target_link_options(${CMAKE_PROJECT_NAME} PRIVATE
+
+target_link_libraries(unishox2_jni PRIVATE
+    ${log-lib}
+)
+
+target_link_options(unishox2_jni PRIVATE
     "-Wl,-z,max-page-size=16384"
     "-Wl,-z,common-page-size=16384"
 )
